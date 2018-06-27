@@ -50,11 +50,12 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="à l'instant"
+            tools:text="10€"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             style="@style/Base.TextAppearance.AppCompat.Caption"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/name" />
