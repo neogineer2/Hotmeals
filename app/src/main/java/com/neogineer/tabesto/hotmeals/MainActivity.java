@@ -1,19 +1,26 @@
 package com.neogineer.tabesto.hotmeals;
 
-import android.support.annotation.NonNull;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.neogineer.tabesto.hotmeals.data.Meal;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,56 +47,79 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MealsAdapter(list);
         mRecycler.setAdapter(mAdapter);
 
+        new DownloadTask().execute();
+
     }
 
 
+    private class DownloadTask extends AsyncTask<String, Integer, List<Meal> >{
 
-    class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> {
 
-        List<Meal> mMeals;
-
-        public MealsAdapter(List<Meal> meals) {
-            this.mMeals = meals;
-        }
-
-        @NonNull
-        @Override
-        public MealsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_card, parent, false);
-            return new ViewHolder(v);
-        }
+        /******** GET FULL SORTED IMAGED ARTICLE OBJECTS ************/
 
         @Override
-        public void onBindViewHolder(@NonNull MealsAdapter.ViewHolder holder, int position) {
-            Meal m = mMeals.get(position);
+        protected List<Meal> doInBackground(String... params) {
 
-            Log.i("adapter", "bind view: "+m.mealName);
+            List<Meal> meals = new LinkedList<>();
+            JSONParser parser = new JSONParser();
 
-            holder.mealId = m.mealId;
-            holder.name.setText(m.mealName);
-            holder.price.setText(m.price + "€");
+            try {
+                String response = IOUtils.toString(new URL("https://www.themealdb.com/api/json/v1/1/latest.php").openStream(), Charset.defaultCharset());
+                JSONObject obj = (JSONObject) parser.parse(response);
 
-            // TODO implement Glide here
+                Log.i("json", "json from server: "+obj);
 
-        }
+                JSONArray mealsArray = (JSONArray) obj.get("meals");
 
-        @Override
-        public int getItemCount() {
-            return mMeals.size();
-        }
+                for(int i=0; i<mealsArray.size(); i++){
+                    JSONObject jMeal = (JSONObject) mealsArray.get(0);
+                    Meal meal = new Meal();
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            int mealId;
-            ImageView image;
-            TextView name;
-            TextView price;
+                    meal.mealId = Integer.parseInt((String) jMeal.get("idMeal"));
+                    meal.mealName = (String) jMeal.get("strMeal");
+                    meal.area = (String) jMeal.get("strArea");
+                    meal.category = (String) jMeal.get("strCategory");
+                    meal.imageUrl = (String) jMeal.get("strMealThumb");
+                    meal.instructions = (String) jMeal.get("strInstructions");
 
-            ViewHolder(View v) {
-                super(v);
-                image = v.findViewById(R.id.image);
-                name = v.findViewById(R.id.name);
-                price = v.findViewById(R.id.price);
+                    List<String> ings = new LinkedList<>();
+                    ings.add((String) jMeal.get("strIngredient1"));
+                    ings.add((String) jMeal.get("strIngredient2"));
+                    ings.add((String) jMeal.get("strIngredient3"));
+                    meal.ingredients = ings;
+
+                    meals.add(meal);
+
+                }
+                Log.i("","");
+
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            return meals;
+        }
+
+        @Override
+        protected void onPostExecute(List<Meal> meals) {
+            super.onPostExecute(meals);
+            mAdapter = new MealsAdapter(meals);
+            mRecycler.setAdapter(mAdapter);
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            if(values[0]==1)
+                Toast.makeText(getBaseContext(), "Problème réseau...", Toast.LENGTH_LONG).show();
+
+
         }
     }
+
 }
