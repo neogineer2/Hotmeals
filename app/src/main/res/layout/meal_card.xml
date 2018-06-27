@@ -42,6 +42,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:paddingBottom="8dp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/image" />
@@ -56,9 +57,9 @@
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            style="@style/Base.TextAppearance.AppCompat.Caption"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/name" />
+            style="@style/Base.TextAppearance.AppCompat.Menu"
+            card_view:layout_constraintRight_toRightOf="parent"
+            card_view:layout_constraintTop_toTopOf="@id/name"/>
 
     </android.support.constraint.ConstraintLayout>
 
