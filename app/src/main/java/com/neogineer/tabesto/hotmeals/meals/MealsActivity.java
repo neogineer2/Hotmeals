@@ -2,6 +2,7 @@ package com.neogineer.tabesto.hotmeals.meals;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,17 +34,27 @@ public class MealsActivity extends AppCompatActivity {
     RecyclerView mRecycler;
     MealsAdapter mAdapter;
     List<Meal> mMeals;
+    SwipeRefreshLayout swipeRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        swipeRefresh = findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(this::downloadData);
+
         mRecycler = findViewById(R.id.recycler_view);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setHasFixedSize(true);
 
+        downloadData();
+    }
+
+    private void downloadData(){
+        swipeRefresh.setRefreshing(true);
         new DownloadTask().execute();
+        swipeRefresh.setRefreshing(false);
     }
 
     private void showMealDetails(int mealId) {
