@@ -1,4 +1,4 @@
-package com.neogineer.tabesto.hotmeals;
+package com.neogineer.tabesto.hotmeals.meals;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.neogineer.tabesto.hotmeals.R;
 import com.neogineer.tabesto.hotmeals.data.Meal;
 
 import java.util.List;

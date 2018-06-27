@@ -1,4 +1,4 @@
-package com.neogineer.tabesto.hotmeals;
+package com.neogineer.tabesto.hotmeals.meals;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -9,10 +9,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.neogineer.tabesto.hotmeals.R;
 import com.neogineer.tabesto.hotmeals.data.Meal;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MealsActivity extends AppCompatActivity {
 
     RecyclerView mRecycler;
     MealsAdapter mAdapter;
@@ -66,31 +66,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String response = IOUtils.toString(new URL("https://www.themealdb.com/api/json/v1/1/latest.php").openStream(), Charset.defaultCharset());
                 JSONObject obj = (JSONObject) parser.parse(response);
-
                 Log.i("json", "json from server: "+obj);
 
-                JSONArray mealsArray = (JSONArray) obj.get("meals");
 
-                for(int i=0; i<mealsArray.size(); i++){
-                    JSONObject jMeal = (JSONObject) mealsArray.get(i);
-                    Meal meal = new Meal();
 
-                    meal.mealId = Integer.parseInt((String) jMeal.get("idMeal"));
-                    meal.mealName = (String) jMeal.get("strMeal");
-                    meal.area = (String) jMeal.get("strArea");
-                    meal.category = (String) jMeal.get("strCategory");
-                    meal.imageUrl = (String) jMeal.get("strMealThumb");
-                    meal.instructions = (String) jMeal.get("strInstructions");
-
-                    List<String> ings = new LinkedList<>();
-                    ings.add((String) jMeal.get("strIngredient1"));
-                    ings.add((String) jMeal.get("strIngredient2"));
-                    ings.add((String) jMeal.get("strIngredient3"));
-                    meal.ingredients = ings;
-
-                    meals.add(meal);
-
-                }
                 Log.i("","");
 
 

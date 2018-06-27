@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Hotmeals</string>
+    <string name="title_activity_meal_details">MealDetailsActivity</string>
 </resources>
