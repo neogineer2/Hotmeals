@@ -1,5 +1,6 @@
 package com.neogineer.tabesto.hotmeals.meals;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,10 +13,10 @@ import android.widget.Toast;
 import com.neogineer.tabesto.hotmeals.R;
 import com.neogineer.tabesto.hotmeals.Utils;
 import com.neogineer.tabesto.hotmeals.data.Meal;
+import com.neogineer.tabesto.hotmeals.meal_details.MealDetailsActivity;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -27,8 +28,11 @@ import java.util.List;
 
 public class MealsActivity extends AppCompatActivity {
 
+    public static final String EXTRA_MEAL = "extra_meal";
+
     RecyclerView mRecycler;
     MealsAdapter mAdapter;
+    List<Meal> mMeals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +43,23 @@ public class MealsActivity extends AppCompatActivity {
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setHasFixedSize(true);
 
-        Meal m = new Meal();
-        m.mealName = "first meal";
-        m.mealId = 1;
-
-        List<Meal> list = new LinkedList<Meal>();
-        list.add(m);
-        mAdapter = new MealsAdapter(list);
-        mRecycler.setAdapter(mAdapter);
-
         new DownloadTask().execute();
+    }
+
+    private void showMealDetails(int mealId) {
+        Meal meal = getMeal(mealId);
+
+        Intent intent = new Intent(this, MealDetailsActivity.class);
+        intent.putExtra(EXTRA_MEAL, meal);
+        startActivity(intent);
+    }
+
+    private Meal getMeal(int mealId){
+        for(Meal m : mMeals){
+            if(m.mealId==mealId)
+                return m;
+        }
+        return null;
     }
 
     private class DownloadTask extends AsyncTask<String, Integer, List<Meal> >{
@@ -75,8 +86,7 @@ public class MealsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Meal> meals) {
             super.onPostExecute(meals);
-            mAdapter = new MealsAdapter(meals);
-            mRecycler.setAdapter(mAdapter);
+            showMeals(meals);
 
         }
 
@@ -88,6 +98,12 @@ public class MealsActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    private void showMeals(List<Meal> meals) {
+        mMeals = meals;
+        mAdapter = new MealsAdapter(mMeals, this::showMealDetails);
+        mRecycler.setAdapter(mAdapter);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.neogineer.tabesto.hotmeals.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * just a POJO
  */
-public class Meal {
+public class Meal implements Serializable{
 
     public int mealId;
     public String mealName;
@@ -31,5 +32,12 @@ public class Meal {
 
     // to be deleted later
     public Meal(){}
+
+    public String getStringMainIngredients(){
+        return
+                ingredients.get(0) + ", "
+                + ingredients.get(1) + ", "
+                + ingredients.get(2) + ".";
+    }
 
 }

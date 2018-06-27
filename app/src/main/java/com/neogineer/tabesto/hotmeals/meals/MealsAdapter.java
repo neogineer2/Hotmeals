@@ -21,10 +21,17 @@ import java.util.List;
 
 class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> {
 
+    public interface MealsAdapterOnClickHandler {
+        void onClick(int mealId);
+    }
+
+    private final MealsAdapterOnClickHandler mClickHandler;
+
     List<Meal> mMeals;
 
-    public MealsAdapter(List<Meal> meals) {
+    public MealsAdapter(List<Meal> meals, MealsAdapterOnClickHandler mClickHandler) {
         this.mMeals = meals;
+        this.mClickHandler = mClickHandler;
     }
 
     @NonNull
@@ -55,7 +62,7 @@ class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> {
         return mMeals.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         int mealId;
         ImageView image;
         TextView name;
@@ -66,6 +73,13 @@ class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> {
             image = v.findViewById(R.id.image);
             name = v.findViewById(R.id.name);
             price = v.findViewById(R.id.price);
+
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mClickHandler.onClick(mealId);
         }
     }
 }
