@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.neogineer.tabesto.hotmeals.data.Meal;
 
 import java.util.List;
@@ -42,7 +43,9 @@ class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> {
         holder.name.setText(m.mealName);
         holder.price.setText(m.price + "€");
 
-        // TODO implement Glide here
+        Glide.with(holder.image.getContext())
+                .load(m.imageUrl)
+                .into(holder.image);
 
     }
 

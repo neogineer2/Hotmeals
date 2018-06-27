@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray mealsArray = (JSONArray) obj.get("meals");
 
                 for(int i=0; i<mealsArray.size(); i++){
-                    JSONObject jMeal = (JSONObject) mealsArray.get(0);
+                    JSONObject jMeal = (JSONObject) mealsArray.get(i);
                     Meal meal = new Meal();
 
                     meal.mealId = Integer.parseInt((String) jMeal.get("idMeal"));
