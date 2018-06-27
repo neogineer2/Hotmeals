@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 
 import com.neogineer.tabesto.hotmeals.R;
+import com.neogineer.tabesto.hotmeals.Utils;
 import com.neogineer.tabesto.hotmeals.data.Meal;
 
 import org.apache.commons.io.IOUtils;
@@ -48,14 +49,9 @@ public class MealsActivity extends AppCompatActivity {
         mRecycler.setAdapter(mAdapter);
 
         new DownloadTask().execute();
-
     }
 
-
     private class DownloadTask extends AsyncTask<String, Integer, List<Meal> >{
-
-
-        /******** GET FULL SORTED IMAGED ARTICLE OBJECTS ************/
 
         @Override
         protected List<Meal> doInBackground(String... params) {
@@ -68,18 +64,11 @@ public class MealsActivity extends AppCompatActivity {
                 JSONObject obj = (JSONObject) parser.parse(response);
                 Log.i("json", "json from server: "+obj);
 
+                meals = Utils.buildMeals(obj);
 
-
-                Log.i("","");
-
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
-
             return meals;
         }
 
@@ -95,7 +84,7 @@ public class MealsActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
             if(values[0]==1)
-                Toast.makeText(getBaseContext(), "Problème réseau...", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Maybe network is bad...", Toast.LENGTH_LONG).show();
 
 
         }

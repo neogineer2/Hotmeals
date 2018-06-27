@@ -2,8 +2,7 @@ package com.neogineer.tabesto.hotmeals;
 
 import com.neogineer.tabesto.hotmeals.data.Meal;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
 import java.util.LinkedList;
@@ -20,7 +19,7 @@ public class Utils {
      * @param obj
      * @return
      */
-    public static List<Meal> buildMeals(JSONObject obj) throws JSONException {
+    public static List<Meal> buildMeals(JSONObject obj) {
         LinkedList<Meal> meals = new LinkedList<>();
 
         JSONArray mealsArray = (JSONArray) obj.get("meals");
