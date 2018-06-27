@@ -20,6 +20,7 @@ public class MealDetailsActivity extends AppCompatActivity {
     ImageView mImage;
     TextView mCategory;
     TextView mArea;
+    TextView mPrice;
     TextView mMainIngredients;
     TextView mInstructions;
 
@@ -39,11 +40,13 @@ public class MealDetailsActivity extends AppCompatActivity {
         mImage = findViewById(R.id.meal_image);
         mCategory = findViewById(R.id.category);
         mArea = findViewById(R.id.area);
+        mPrice = findViewById(R.id.meal_price);
         mMainIngredients = findViewById(R.id.main_ingredients);
         mInstructions = findViewById(R.id.instructions);
 
         mCategory.setText(mMeal.category);
         mArea.setText(mMeal.area);
+        mPrice.setText(mMeal.price + "€");
         mMainIngredients.setText(mMeal.getStringMainIngredients());
         mInstructions.setText(mMeal.instructions);
 

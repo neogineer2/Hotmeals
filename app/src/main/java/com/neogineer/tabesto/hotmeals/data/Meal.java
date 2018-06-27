@@ -30,8 +30,9 @@ public class Meal implements Serializable{
         this.imageUrl = imageUrl;
     }
 
-    // to be deleted later
-    public Meal(){}
+    public Meal(){
+        price = (int) (6 + Math.random()*20.0);
+    }
 
     public String getStringMainIngredients(){
         return

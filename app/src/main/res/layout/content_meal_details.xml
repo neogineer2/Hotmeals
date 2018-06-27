@@ -71,6 +71,7 @@
             tools:text="India" />
 
         <TextView
+            android:id="@+id/meal_price"
             android:layout_marginRight="@dimen/meal_details_icons_margin"
             app:layout_constraintTop_toTopOf="@id/area_icon"
             app:layout_constraintRight_toRightOf="parent"

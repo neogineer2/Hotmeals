@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Available meals</string>
+    <string name="app_name">Hotmeals</string>
     <string name="title_activity_meal_details">Meal details</string>
 </resources>
